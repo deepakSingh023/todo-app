@@ -1,16 +1,23 @@
-const mongoose=require('mongoose')
+require('dotenv').config(); // Ensure this is at the top
 
-mongoose.connect('mongodb+srv://dsinghrana71:H67t6olkn6eYvTgO@cluster0.nkrfm.mongodb.net/todo-app')
+const mongoose = require('mongoose');
+
+// Log the MongoDB URI to check if it's loaded correctly
+console.log('MongoDB URI:', process.env.MONGOURI);
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGOURI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 const Todoschema = new mongoose.Schema({
-    task:String,
-    taskdone:{
-        type:Boolean,
-        default:false
+    task: String,
+    taskdone: {
+        type: Boolean,
+        default: false
     }
+});
 
-})
+const Taskmodel = mongoose.model('todos', Todoschema);
 
-const Taskmodel=mongoose.model('todos',Todoschema)
-
-module.exports=Taskmodel
+module.exports = Taskmodel;
